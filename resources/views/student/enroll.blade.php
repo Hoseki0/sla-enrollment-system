@@ -8,31 +8,31 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { --primary:#1a3c6e; --accent:#e8a020; --accent-light:#f5c04a; --green:#15803d; }
-        body { font-family:'Inter',sans-serif; background:linear-gradient(135deg,#0d2b50 0%,#1a3c6e 60%,#15803d 100%); min-height:100vh; padding:2rem 0; }
+        :root { --primary:#003366; --primary-light:#00509e; --accent:#007bff; --accent-light:#e6f2ff; --text-dark:#1e293b; --text-muted:#64748b; }
+        body { font-family:'Inter',sans-serif; background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 100%); min-height:100vh; padding:2rem 0; }
         .page-wrapper { max-width:860px; margin:0 auto; padding:0 1rem; }
         .page-header { text-align:center; margin-bottom:2rem; }
-        .page-header .logo { width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-light));display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto .75rem;box-shadow:0 8px 25px rgba(232,160,32,.4);overflow:hidden; }
+        .page-header .logo { width:70px;height:70px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto .75rem;box-shadow:0 8px 25px rgba(0,0,0,.15);overflow:hidden;border:2px solid var(--accent-light); }
         .page-header .logo img { width:100%;height:100%;object-fit:cover;border-radius:50%; }
         .page-header h1 { color:#fff;font-size:1.6rem;font-weight:800;margin:.5rem 0 .25rem; }
         .page-header p  { color:rgba(255,255,255,.55);font-size:.85rem; }
-        .card { border:1px solid rgba(255,255,255,.1);border-radius:18px;background:rgba(255,255,255,.06);backdrop-filter:blur(16px);margin-bottom:1.25rem; }
-        .card-header { background:rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.08);border-radius:18px 18px 0 0;padding:1rem 1.25rem;color:#fff;font-weight:700;font-size:.92rem; }
-        .card-header.primary { background:linear-gradient(135deg,#1a3c6e,#2356a0); }
-        .card-body { padding:1.25rem; }
-        .form-label { color:rgba(255,255,255,.65);font-size:.8rem;font-weight:500;margin-bottom:.35rem; }
-        .form-control, .form-select { background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);color:#fff;border-radius:10px;font-size:.88rem; }
-        .form-control:focus, .form-select:focus { background:rgba(255,255,255,.1);border-color:var(--accent);box-shadow:0 0 0 3px rgba(232,160,32,.15);color:#fff; }
-        .form-control::placeholder { color:rgba(255,255,255,.25); }
-        .form-select option { background:#1a3c6e;color:#fff; }
-        .text-required { color:#f87171; }
-        .section-label { color:rgba(255,255,255,.35);font-size:.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin:0 0 .6rem;padding-bottom:.4rem;border-bottom:1px solid rgba(255,255,255,.07); }
-        .btn-submit { background:linear-gradient(135deg,var(--green),#16a34a);border:none;color:#fff;font-weight:700;padding:.75rem 2rem;border-radius:12px;font-size:.95rem;transition:all .3s;box-shadow:0 6px 20px rgba(21,128,61,.4); }
-        .btn-submit:hover { transform:translateY(-2px);box-shadow:0 10px 28px rgba(21,128,61,.55); }
+        .card { border:1px solid rgba(0,0,0,.05);border-radius:18px;background:#ffffff;box-shadow:0 15px 35px rgba(0,30,80,.15);margin-bottom:1.25rem;overflow:hidden; }
+        .card-header { background:#f8fafc;border-bottom:1px solid #e2e8f0;padding:1.2rem 1.5rem;color:var(--primary);font-weight:800;font-size:.95rem; }
+        .card-header.primary { background:linear-gradient(135deg,var(--primary-light),var(--primary)); color:#fff; }
+        .card-body { padding:1.5rem; }
+        .form-label { color:var(--text-dark);font-size:.8rem;font-weight:600;margin-bottom:.35rem; }
+        .form-control, .form-select { background:#f8fafc;border:1px solid #e2e8f0;color:var(--text-dark);border-radius:10px;font-size:.88rem;padding:.65rem .9rem;transition:all .2s; }
+        .form-control:focus, .form-select:focus { background:#fff;border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,123,255,.2);color:var(--text-dark); }
+        .form-control::placeholder { color:#94a3b8; }
+        .form-select option { background:#fff;color:var(--text-dark); }
+        .text-required { color:#ef4444; }
+        .section-label { color:var(--primary-light);font-size:.68rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;margin:0 0 .8rem;padding-bottom:.4rem;border-bottom:1px solid #e2e8f0; }
+        .btn-submit { background:linear-gradient(135deg,var(--primary-light),var(--primary));border:none;color:#fff;font-weight:700;padding:.75rem 2rem;border-radius:12px;font-size:.95rem;transition:all .3s;box-shadow:0 6px 20px rgba(0,80,158,.3); }
+        .btn-submit:hover { transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,80,158,.5); }
         .back-link { color:rgba(255,255,255,.45);font-size:.82rem;text-decoration:none;display:inline-flex;align-items:center;gap:.3rem;margin-bottom:1.25rem; }
         .back-link:hover { color:rgba(255,255,255,.75); }
-        .alert-error { background:rgba(220,53,69,.15);border:1px solid rgba(220,53,69,.3);color:#ff6b7a;border-radius:12px;font-size:.85rem;padding:.8rem 1rem;margin-bottom:1rem; }
-        .password-note { background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.2);border-radius:10px;padding:.65rem 1rem;color:rgba(255,255,255,.6);font-size:.78rem;margin-top:.35rem; }
+        .alert-error { background:#fef2f2;border:1px solid #fecaca;color:#ef4444;border-radius:12px;font-size:.85rem;padding:.8rem 1rem;margin-bottom:1rem; }
+        .password-note { background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.65rem 1rem;color:var(--text-muted);font-size:.78rem;margin-top:.35rem; }
     </style>
 </head>
 <body>
@@ -213,7 +213,7 @@
 
         {{-- Portal Password --}}
         <div class="card">
-            <div class="card-header" style="background:linear-gradient(135deg,#15803d,#16a34a);border-radius:18px 18px 0 0;">
+            <div class="card-header primary" style="border-radius:18px 18px 0 0;">
                 <i class="bi bi-shield-lock me-2"></i>Create Your Portal Password
             </div>
             <div class="card-body">
@@ -232,7 +232,7 @@
         </div>
 
         <div class="d-flex justify-content-between align-items-center pb-4">
-            <a href="{{ route('student.login') }}" class="btn btn-outline-light rounded-pill px-4" style="opacity:.6;">Cancel</a>
+            <a href="{{ route('student.login') }}" class="btn btn-light rounded-pill px-4" style="color:var(--primary);font-weight:600;">Cancel</a>
             <button type="submit" id="submitBtn" class="btn-submit rounded-pill">
                 <i class="bi bi-send me-2"></i>Submit Enrollment Application
             </button>

@@ -12,10 +12,10 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
     <style>
         :root {
-            --primary: #1a3c6e; --primary-dark: #0d2550; --primary-light: #2356a0;
-            --accent: #e8a020; --accent-light: #f5c04a;
+            --primary: #003366; --primary-dark: #001f3f; --primary-light: #00509e;
+            --accent: #007bff; --accent-light: #e6f2ff;
             --sidebar-w: 260px; --topbar-h: 64px;
-            --bg: #f0f4f8; --card-bg: #fff; --text: #1e293b; --text-muted: #64748b; --border: #e2e8f0;
+            --bg: #f8fafc; --card-bg: #fff; --text: #1e293b; --text-muted: #64748b; --border: #e2e8f0;
         }
         * { box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; }
@@ -28,19 +28,19 @@
             box-shadow: 4px 0 20px rgba(0,0,0,.15);
         }
         .sidebar-brand { padding: 1.25rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,.08); display: flex; align-items: center; gap: .75rem; }
-        .brand-icon { width: 42px; height: 42px; border-radius: 12px; background: linear-gradient(135deg, var(--accent), var(--accent-light)); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; box-shadow: 0 4px 12px rgba(232,160,32,.4); }
+        .brand-icon { width: 42px; height: 42px; border-radius: 12px; background: var(--card-bg); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; box-shadow: 0 4px 12px rgba(0,0,0,.1); border: 2px solid var(--accent-light); }
         .brand-name { color: #fff; font-size: .9rem; font-weight: 700; }
         .brand-sub  { color: rgba(255,255,255,.45); font-size: .68rem; letter-spacing: 1px; text-transform: uppercase; }
-        .sidebar-sy { margin: .75rem 1rem; background: rgba(232,160,32,.12); border: 1px solid rgba(232,160,32,.25); border-radius: 8px; padding: .5rem .75rem; color: var(--accent-light); font-size: .75rem; font-weight: 600; display: flex; align-items: center; gap: .4rem; }
+        .sidebar-sy { margin: .75rem 1rem; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); border-radius: 8px; padding: .5rem .75rem; color: var(--accent-light); font-size: .75rem; font-weight: 600; display: flex; align-items: center; gap: .4rem; }
         .sidebar-nav { flex: 1; padding: .5rem .75rem; overflow-y: auto; }
         .nav-section { color: rgba(255,255,255,.3); font-size: .65rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: .75rem .75rem .4rem; }
         .nav-link-item { display: flex; align-items: center; gap: .75rem; padding: .65rem .85rem; border-radius: 10px; color: rgba(255,255,255,.65); font-size: .88rem; font-weight: 500; text-decoration: none; transition: all .2s; margin-bottom: 2px; }
         .nav-link-item i { font-size: 1.05rem; width: 20px; text-align: center; }
         .nav-link-item:hover { background: rgba(255,255,255,.08); color: #fff; }
-        .nav-link-item.active { background: linear-gradient(135deg, var(--accent), var(--accent-light)); color: #1a1a1a; font-weight: 700; box-shadow: 0 4px 12px rgba(232,160,32,.35); }
+        .nav-link-item.active { background: var(--accent-light); color: var(--primary-dark); font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,.1); }
         .sidebar-footer { padding: 1rem .75rem; border-top: 1px solid rgba(255,255,255,.08); }
         .admin-info { display: flex; align-items: center; gap: .75rem; padding: .6rem .75rem; border-radius: 10px; background: rgba(255,255,255,.05); }
-        .admin-avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-light), var(--accent)); display: flex; align-items: center; justify-content: center; color: #fff; font-size: .85rem; font-weight: 700; flex-shrink: 0; }
+        .admin-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--accent-light); display: flex; align-items: center; justify-content: center; color: var(--primary-dark); font-size: .85rem; font-weight: 700; flex-shrink: 0; }
         .admin-name { color: #fff; font-size: .8rem; font-weight: 600; }
         .admin-role { color: rgba(255,255,255,.4); font-size: .68rem; text-transform: capitalize; }
 
@@ -170,7 +170,7 @@ $navItems = [
 
 <main class="main-content">
     @if(session('success'))
-    <div class="alert border-0 rounded-3 mb-3 d-flex align-items-center" style="background:#dcfce7;color:#15803d;" role="alert">
+    <div class="alert border-0 rounded-3 mb-3 d-flex align-items-center" style="background:#d1e7dd;color:#0f5132;" role="alert">
         <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
         <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
     </div>

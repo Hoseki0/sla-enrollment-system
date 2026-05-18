@@ -9,11 +9,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary:#15803d; --primary-dark:#166534; --primary-light:#16a34a;
-            --accent:#e8a020; --accent-light:#f5c04a;
-            --navy:#1a3c6e; --navy-light:#2356a0;
+            --primary:#003366; --primary-dark:#001f3f; --primary-light:#00509e;
+            --accent:#007bff; --accent-light:#e6f2ff;
+            --navy:#003366; --navy-light:#00509e;
             --sidebar-w:250px; --topbar-h:64px;
-            --bg:#f0fdf4; --card-bg:#fff; --text:#1e293b; --text-muted:#64748b; --border:#e2e8f0;
+            --bg:#f8fafc; --card-bg:#fff; --text:#1e293b; --text-muted:#64748b; --border:#e2e8f0;
         }
         * { box-sizing:border-box; }
         body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); margin:0; }
@@ -21,13 +21,13 @@
         /* SIDEBAR */
         .sidebar { position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:linear-gradient(180deg,var(--primary-dark) 0%,var(--primary) 100%);display:flex;flex-direction:column;z-index:1000;box-shadow:4px 0 20px rgba(0,0,0,.15); }
         .sidebar-brand { padding:1.25rem 1.25rem;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:.75rem; }
-        .brand-icon { width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-light));display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;box-shadow:0 4px 12px rgba(232,160,32,.4);overflow:hidden; }
-        .brand-icon img { width:100%;height:100%;object-fit:cover;border-radius:12px; }
+        .brand-icon { width:42px;height:42px;border-radius:12px;background:var(--card-bg);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;box-shadow:0 4px 12px rgba(0,0,0,.1);overflow:hidden;border:2px solid var(--accent-light); }
+        .brand-icon img { width:100%;height:100%;object-fit:cover;border-radius:10px; }
         .brand-name { color:#fff;font-size:.88rem;font-weight:700; }
         .brand-sub  { color:rgba(255,255,255,.4);font-size:.65rem;letter-spacing:1px;text-transform:uppercase; }
 
         .student-card { margin:.75rem; background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:.85rem;display:flex;align-items:center;gap:.75rem; }
-        .student-avatar { width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-light));display:flex;align-items:center;justify-content:center;color:#1a1a1a;font-size:1.05rem;font-weight:800;flex-shrink:0; }
+        .student-avatar { width:44px;height:44px;border-radius:50%;background:var(--accent-light);display:flex;align-items:center;justify-content:center;color:var(--primary-dark);font-size:1.05rem;font-weight:800;flex-shrink:0; }
         .student-name  { color:#fff;font-size:.85rem;font-weight:700;line-height:1.2; }
         .student-id    { color:rgba(255,255,255,.45);font-size:.7rem; }
 
@@ -36,11 +36,11 @@
         .nav-link-item { display:flex;align-items:center;gap:.75rem;padding:.65rem .85rem;border-radius:10px;color:rgba(255,255,255,.65);font-size:.87rem;font-weight:500;text-decoration:none;transition:all .2s;margin-bottom:2px; }
         .nav-link-item i { font-size:1.05rem;width:20px;text-align:center; }
         .nav-link-item:hover { background:rgba(255,255,255,.08);color:#fff; }
-        .nav-link-item.active { background:linear-gradient(135deg,var(--accent),var(--accent-light));color:#1a1a1a;font-weight:700;box-shadow:0 4px 12px rgba(232,160,32,.35); }
+        .nav-link-item.active { background:var(--accent-light);color:var(--primary-dark);font-weight:700;box-shadow:0 4px 12px rgba(0,0,0,.1); }
         .sidebar-footer { padding:.75rem; }
 
         /* TOPBAR */
-        .topbar { position:fixed;top:0;left:var(--sidebar-w);right:0;height:var(--topbar-h);z-index:900;background:rgba(240,253,244,.9);backdrop-filter:blur(12px);border-bottom:1px solid rgba(21,128,61,.1);display:flex;align-items:center;padding:0 1.5rem;gap:1rem; }
+        .topbar { position:fixed;top:0;left:var(--sidebar-w);right:0;height:var(--topbar-h);z-index:900;background:rgba(255,255,255,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 1.5rem;gap:1rem; }
         .topbar-title { font-size:1.1rem;font-weight:700;color:var(--text);flex:1; }
 
         /* MAIN */
@@ -146,7 +146,7 @@
 
 <main class="main-content">
     @if(session('success'))
-    <div class="alert border-0 rounded-3 mb-3 d-flex align-items-center" style="background:#dcfce7;color:#15803d;" role="alert">
+    <div class="alert border-0 rounded-3 mb-3 d-flex align-items-center" style="background:#d1e7dd;color:#0f5132;" role="alert">
         <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
         <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
     </div>

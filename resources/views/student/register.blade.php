@@ -8,21 +8,21 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { --primary:#1a3c6e; --accent:#e8a020; --green:#15803d; }
-        body { font-family:'Inter',sans-serif; min-height:100vh; background:linear-gradient(135deg,#0d2b50 0%,#1a3c6e 50%,#15803d 100%); display:flex; align-items:center; justify-content:center; padding:1.5rem; }
+        :root { --primary:#003366; --primary-light:#00509e; --accent:#007bff; --accent-light:#e6f2ff; }
+        body { font-family:'Inter',sans-serif; min-height:100vh; background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 100%); display:flex; align-items:center; justify-content:center; padding:1.5rem; }
         .card-wrap { width:100%;max-width:480px; }
         .glass-card { background:rgba(255,255,255,.06);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:2.5rem;box-shadow:0 30px 70px rgba(0,0,0,.5); }
-        .logo { width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#f5c04a);display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto 1rem;box-shadow:0 8px 24px rgba(232,160,32,.4);overflow:hidden; }
+        .logo { width:72px;height:72px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto 1rem;box-shadow:0 8px 24px rgba(0,0,0,.15);overflow:hidden;border:2px solid var(--accent-light); }
         .logo img { width:100%;height:100%;object-fit:cover;border-radius:50%; }
         h1 { color:#fff;font-size:1.45rem;font-weight:800;text-align:center; }
         .sub { color:rgba(255,255,255,.45);font-size:.8rem;text-align:center;margin-bottom:2rem; }
         .form-label { color:rgba(255,255,255,.65);font-size:.82rem;font-weight:500;margin-bottom:.35rem; }
         .form-control { background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);color:#fff;border-radius:10px;padding:.65rem 1rem;font-size:.9rem; }
-        .form-control:focus { background:rgba(255,255,255,.1);border-color:var(--accent);box-shadow:0 0 0 3px rgba(232,160,32,.15);color:#fff; }
+        .form-control:focus { background:rgba(255,255,255,.1);border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,123,255,.2);color:#fff; }
         .form-control::placeholder { color:rgba(255,255,255,.25); }
-        .btn-create { background:linear-gradient(135deg,var(--primary),#2356a0);border:none;color:#fff;font-weight:700;font-size:.95rem;padding:.75rem;border-radius:10px;width:100%;box-shadow:0 6px 20px rgba(26,60,110,.5);transition:all .3s; }
-        .btn-create:hover { transform:translateY(-2px);box-shadow:0 10px 28px rgba(26,60,110,.65); }
-        .info-box { background:rgba(232,160,32,.08);border:1px solid rgba(232,160,32,.2);border-radius:12px;padding:.9rem 1rem;color:rgba(255,255,255,.6);font-size:.8rem;margin-bottom:1.25rem;line-height:1.6; }
+        .btn-create { background:linear-gradient(135deg,var(--primary-light),var(--primary));border:none;color:#fff;font-weight:700;font-size:.95rem;padding:.75rem;border-radius:10px;width:100%;box-shadow:0 6px 20px rgba(0,80,158,.3);transition:all .3s; }
+        .btn-create:hover { transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,80,158,.5); }
+        .info-box { background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:.9rem 1rem;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:1.25rem;line-height:1.6; }
         .alert-error { background:rgba(220,53,69,.15);border:1px solid rgba(220,53,69,.3);color:#ff6b7a;border-radius:10px;font-size:.85rem;padding:.7rem 1rem;margin-bottom:1rem; }
         .divider { border:none;height:1px;background:rgba(255,255,255,.1);margin:1.25rem 0; }
         .back-link { display:block;text-align:center;color:rgba(255,255,255,.35);font-size:.8rem;text-decoration:none;margin-top:1rem; }
@@ -45,8 +45,8 @@
         <p class="sub">Already enrolled at Sta. Lucia Academy? Set up your Student Portal account.</p>
 
         <div class="info-box">
-            <i class="bi bi-info-circle me-2" style="color:#f5c04a;"></i>
-            You need your <strong style="color:#f5c04a;">Student ID</strong> (e.g. <code style="color:#f5c04a;">2025-0001</code>) and your <strong style="color:#f5c04a;">Last Name</strong> to verify your identity.
+            <i class="bi bi-info-circle me-2" style="color:var(--accent-light);"></i>
+            You need your <strong style="color:var(--accent-light);">Student ID</strong> (e.g. <code style="color:var(--accent-light);">2025-0001</code>) and your <strong style="color:var(--accent-light);">Last Name</strong> to verify your identity.
         </div>
 
         @if($errors->any())
