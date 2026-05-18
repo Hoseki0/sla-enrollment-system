@@ -1,59 +1,115 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sta. Lucia Academy Enrollment System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A modern, web-based Enrollment Management System and Student Portal built specifically for **Sta. Lucia Academy**. This application streamlines the enrollment process for students and provides school administrators with a comprehensive dashboard to manage records, sections, and academic school years.
 
-## About Laravel
+![SLA Enrollment System Theme](https://img.shields.io/badge/Theme-Blue%20%26%20White-00509e)
+![Framework](https://img.shields.io/badge/Framework-Laravel-FF2D20?logo=laravel)
+![Database](https://img.shields.io/badge/Database-MySQL-4479A1?logo=mysql)
+![Frontend](https://img.shields.io/badge/Frontend-Bootstrap%205-7952B3?logo=bootstrap)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🌟 Key Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 🎓 For Students (Student Portal)
+- **Account Registration & Login**: Secure account creation requiring verification (Student ID + Last Name).
+- **Online Enrollment Application**: A dynamic, multi-step enrollment form supporting both Junior High School (JHS) and Senior High School (SHS).
+- **Track & Strand Selection**: Dynamically loads applicable academic tracks and strands for SHS enrollees.
+- **Real-time Status Tracking**: Students can log in to check if their enrollment is Pending, Enrolled, Cancelled, or Dropped.
+- **Profile Management**: Keep personal, address, and guardian information up to date.
 
-## Learning Laravel
+### 🛡️ For Administrators (Admin Portal)
+- **Analytics Dashboard**: Get a birds-eye view of total enrollments, pending applications, and student populations.
+- **Enrollment Processing**: Review incoming enrollment applications and easily approve or decline them.
+- **Student Records**: Maintain a centralized, searchable database of all enrolled students using DataTables.
+- **Section Management**: Create and assign students to specific grade sections and adviser classes.
+- **School Year Configuration**: Toggle active academic school years to ensure data is properly categorized.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 🎨 UI/UX Design
+The system utilizes a premium **Blue and White** aesthetic. The design includes:
+- Modern glassmorphism effects and clean solid white containers.
+- Smooth CSS keyframe entrance animations (e.g., slide-ins, pop-ins) for a dynamic feel.
+- Responsive layout that ensures the system is accessible on both mobile phones and desktop computers.
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 🚀 Installation & Setup
 
-### Premium Partners
+Follow these steps to run the project locally on your machine using **XAMPP**.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Prerequisites
+- PHP 8.1 or higher
+- Composer
+- MySQL (via XAMPP)
+- Git
 
-## Contributing
+### 1. Clone the Repository
+```bash
+git clone https://github.com/your-username/sla-enrollment.git
+cd sla-enrollment
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 2. Install Dependencies
+```bash
+composer install
+npm install
+```
 
-## Code of Conduct
+### 3. Environment Configuration
+Copy the sample environment file and generate your application key.
+```bash
+copy .env.example .env
+php artisan key:generate
+```
+Open the `.env` file and configure your database connection:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=sla
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 4. Database Setup
+Make sure your Apache and MySQL servers are running in XAMPP. Create a database named `sla` in phpMyAdmin, then run the migrations and seeders:
+```bash
+php artisan migrate:fresh --seed
+```
+*(Optional)* You can also run the custom demo seeder to populate sample data:
+```bash
+php artisan db:seed --class=DemoSeeder
+```
+*(Or navigate to `http://localhost/sla-enrollment/seed_demo.php` if configured).*
 
-## Security Vulnerabilities
+### 5. Run the Application
+Start the Laravel development server:
+```bash
+php artisan serve
+```
+The application will be accessible at: `http://localhost:8000`
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## 📁 System Architecture
+- **Backend Framework**: Laravel
+- **Frontend**: Blade Templating, Vanilla CSS, Bootstrap 5.3, Bootstrap Icons
+- **Database Tables**:
+  - `users` / `admins`
+  - `students`
+  - `enrollments`
+  - `school_years`
+  - `sections`
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## 🛠️ Automated Updates
+A custom batch script (`update.bat`) is included in the root directory. To quickly push changes to GitHub:
+1. Double click `update.bat`.
+2. Enter your commit message.
+3. The script will automatically add, commit, and push your code to the remote repository.
+
+---
+*Developed for Sta. Lucia Academy.*
