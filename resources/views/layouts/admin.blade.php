@@ -93,12 +93,29 @@
 @php $admin = auth('admin')->user(); $sy = \App\Models\SchoolYear::active(); @endphp
 @php
 $navItems = [
-    ['icon'=>'bi-speedometer2',  'label'=>'Dashboard',    'route'=>'admin.dashboard'],
-    ['icon'=>'bi-person-plus',   'label'=>'New Enrollment','route'=>'admin.enrollments.create'],
-    ['icon'=>'bi-journal-check', 'label'=>'Enrollments',   'route'=>'admin.enrollments.index'],
-    ['icon'=>'bi-people',        'label'=>'Students',      'route'=>'admin.students.index'],
-    ['icon'=>'bi-grid-3x3-gap',  'label'=>'Sections',      'route'=>'admin.sections.index'],
-    ['icon'=>'bi-calendar3',     'label'=>'School Years',  'route'=>'admin.school-years.index'],
+    // Core
+    ['icon'=>'bi-speedometer2',   'label'=>'Dashboard',         'route'=>'admin.dashboard'],
+    ['icon'=>'bi-person-plus',    'label'=>'New Enrollment',    'route'=>'admin.enrollments.create'],
+    ['icon'=>'bi-journal-check',  'label'=>'Enrollments',       'route'=>'admin.enrollments.index'],
+    ['icon'=>'bi-people',         'label'=>'Students',          'route'=>'admin.students.index'],
+    ['icon'=>'bi-credit-card',    'label'=>'Payments',          'route'=>'admin.payments.index'],
+    ['icon'=>'bi-cash-stack',     'label'=>'Fee Schedules',     'route'=>'admin.fees.index'],
+    ['icon'=>'bi-mortarboard',    'label'=>'Grades',            'route'=>'admin.grades.index'],
+    ['icon'=>'bi-grid-3x3-gap',   'label'=>'Sections',          'route'=>'admin.sections.index'],
+    ['icon'=>'bi-calendar3',      'label'=>'School Years',      'route'=>'admin.school-years.index'],
+];
+$reportItems = [
+    ['icon'=>'bi-file-earmark-bar-graph', 'label'=>'Enrollment Report',  'route'=>'admin.reports.enrollments'],
+    ['icon'=>'bi-file-earmark-spreadsheet','label'=>'Payment Report',    'route'=>'admin.reports.payments'],
+];
+$commsItems = [
+    ['icon'=>'bi-megaphone',     'label'=>'Announcements',   'route'=>'admin.announcements.index'],
+    ['icon'=>'bi-file-earmark',  'label'=>'Doc Requests',    'route'=>'admin.document-requests.index'],
+];
+$systemItems = [
+    ['icon'=>'bi-person-badge',  'label'=>'Admin Users',    'route'=>'admin.users.index'],
+    ['icon'=>'bi-activity',      'label'=>'Activity Log',   'route'=>'admin.activity-log.index'],
+    ['icon'=>'bi-gear',          'label'=>'Settings',       'route'=>'admin.settings.index'],
 ];
 @endphp
 
@@ -129,6 +146,40 @@ $navItems = [
             <i class="bi {{ $item['icon'] }}"></i> {{ $item['label'] }}
         </a>
         @endforeach
+
+        <div class="nav-section" style="margin-top:.75rem;">Reports</div>
+        @foreach($reportItems as $item)
+        <a href="{{ route($item['route']) }}"
+           class="nav-link-item {{ request()->routeIs($item['route'].'*') ? 'active' : '' }}">
+            <i class="bi {{ $item['icon'] }}"></i> {{ $item['label'] }}
+        </a>
+        @endforeach
+
+        <div class="nav-section" style="margin-top:.75rem;">Communications</div>
+        @foreach($commsItems as $item)
+        @php
+            $badge = null;
+            if ($item['route'] === 'admin.document-requests.index') {
+                $badge = \App\Models\DocumentRequest::where('status','pending')->count();
+            }
+        @endphp
+        <a href="{{ route($item['route']) }}"
+           class="nav-link-item {{ request()->routeIs($item['route'].'*') ? 'active' : '' }}">
+            <i class="bi {{ $item['icon'] }}"></i> {{ $item['label'] }}
+            @if($badge)
+                <span class="ms-auto badge rounded-pill" style="background:#ef4444;color:#fff;font-size:.65rem;">{{ $badge }}</span>
+            @endif
+        </a>
+        @endforeach
+
+        <div class="nav-section" style="margin-top:.75rem;">System</div>
+        @foreach($systemItems as $item)
+        <a href="{{ route($item['route']) }}"
+           class="nav-link-item {{ request()->routeIs($item['route'].'*') ? 'active' : '' }}">
+            <i class="bi {{ $item['icon'] }}"></i> {{ $item['label'] }}
+        </a>
+        @endforeach
+
         <div class="nav-section" style="margin-top:.5rem;">Account</div>
         <form method="POST" action="{{ route('admin.logout') }}">
             @csrf

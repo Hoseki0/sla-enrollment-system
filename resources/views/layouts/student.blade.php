@@ -115,7 +115,38 @@
            class="nav-link-item {{ request()->routeIs('student.profile') ? 'active' : '' }}">
             <i class="bi bi-person-circle"></i> My Profile
         </a>
-        <div class="nav-section">Account</div>
+        <a href="{{ route('student.payments.index') }}"
+           class="nav-link-item {{ request()->routeIs('student.payments.*') ? 'active' : '' }}">
+            <i class="bi bi-credit-card"></i> Payments
+        </a>
+        <a href="{{ route('student.grades.index') }}"
+           class="nav-link-item {{ request()->routeIs('student.grades.*') ? 'active' : '' }}">
+            <i class="bi bi-mortarboard"></i> My Grades
+        </a>
+        <a href="{{ route('student.exams.index') }}"
+           class="nav-link-item {{ request()->routeIs('student.exams.*') ? 'active' : '' }}">
+            <i class="bi bi-journal-text"></i> Examinations
+        </a>
+
+        <div class="nav-section" style="margin-top:.75rem;">Services</div>
+        <a href="{{ route('student.re-enroll') }}"
+           class="nav-link-item {{ request()->routeIs('student.re-enroll*') ? 'active' : '' }}">
+            <i class="bi bi-journal-plus"></i> Online Enrollment
+        </a>
+        <a href="{{ route('student.document-requests.index') }}"
+           class="nav-link-item {{ request()->routeIs('student.document-requests.*') ? 'active' : '' }}">
+            <i class="bi bi-file-earmark-text"></i> Document Requests
+        </a>
+        <a href="{{ route('student.certificate') }}"
+           class="nav-link-item {{ request()->routeIs('student.certificate') ? 'active' : '' }}">
+            <i class="bi bi-award"></i> My Certificate
+        </a>
+        <a href="{{ route('student.profile.edit') }}"
+           class="nav-link-item {{ request()->routeIs('student.profile.edit') ? 'active' : '' }}">
+            <i class="bi bi-pencil-square"></i> Edit Profile
+        </a>
+
+        <div class="nav-section" style="margin-top:.5rem;">Account</div>
         <form method="POST" action="{{ route('student.logout') }}">
             @csrf
             <button type="submit" class="nav-link-item w-100 border-0 bg-transparent text-start">
@@ -151,6 +182,36 @@
         <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
     </div>
     @endif
+    @if(session('error'))
+    <div class="alert border-0 rounded-3 mb-3 d-flex align-items-center" style="background:#fee2e2;color:#dc2626;" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ session('error') }}
+        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
+    </div>
+    @endif
+
+    {{-- Announcements Banner --}}
+    @php
+        $student = auth('student')->user();
+        $levelType = $student?->latestEnrollment?->level_type ?? 'JHS';
+        $announcements = \App\Models\Announcement::published()
+            ->forAudience($levelType)
+            ->orderByPriority()
+            ->latest()
+            ->take(3)
+            ->get();
+    @endphp
+    @foreach($announcements as $ann)
+    <div class="alert border-0 rounded-3 mb-2 d-flex align-items-start gap-2"
+         style="background:{{ $ann->priority === 'urgent' ? '#fee2e2' : ($ann->priority === 'important' ? '#fffbeb' : '#eff6ff') }};
+                color:{{ $ann->priority === 'urgent' ? '#991b1b' : ($ann->priority === 'important' ? '#92400e' : '#1e40af') }};">
+        <i class="bi {{ $ann->priority_icon }} mt-1 flex-shrink-0"></i>
+        <div>
+            <strong>{{ $ann->title }}</strong>
+            <div style="font-size:.84rem;margin-top:2px;">{{ $ann->body }}</div>
+        </div>
+        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
+    </div>
+    @endforeach
 
     @yield('content')
 </main>

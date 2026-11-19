@@ -18,8 +18,8 @@
         <div class="flex-grow-1">
             <div style="color:#fff;font-size:1.35rem;font-weight:800;line-height:1.2;">{{ $student->full_name }}</div>
             <div style="color:rgba(255,255,255,.6);font-size:.85rem;margin-top:.25rem;">
-                Student ID: <span style="color:#f5c04a;font-weight:700;">{{ $student->student_id }}</span>
-                &nbsp;&bull;&nbsp; LRN: <span style="color:#f5c04a;font-weight:700;">{{ $student->lrn ?? '—' }}</span>
+                LRN: <span style="color:#f5c04a;font-weight:700;">{{ $student->lrn ?? '—' }}</span>
+                &nbsp;&bull;&nbsp; Student ID: <span style="color:#f5c04a;font-weight:700;">{{ $student->student_id }}</span>
             </div>
         </div>
         <div class="text-end" style="color:rgba(255,255,255,.6);font-size:.78rem;">

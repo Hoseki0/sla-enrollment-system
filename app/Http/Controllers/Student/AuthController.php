@@ -19,12 +19,12 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'student_id' => 'required|string',
+            'lrn' => 'required|string',
             'password'   => 'required|string',
         ]);
 
         $credentials = [
-            'student_id' => $request->student_id,
+            'lrn' => $request->lrn,
             'password'   => $request->password,
         ];
 
@@ -33,7 +33,7 @@ class AuthController extends Controller
             return redirect()->route('student.dashboard');
         }
 
-        return back()->withErrors(['student_id' => 'Invalid Student ID or password.'])->withInput($request->except('password'));
+        return back()->withErrors(['lrn' => 'Invalid LRN or password.'])->withInput($request->except('password'));
     }
 
     public function logout(Request $request)

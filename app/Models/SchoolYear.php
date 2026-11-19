@@ -20,6 +20,16 @@ class SchoolYear extends Model
         return $this->hasMany(Enrollment::class);
     }
 
+    public function feeSchedules()
+    {
+        return $this->hasMany(FeeSchedule::class);
+    }
+
+    public function examinations()
+    {
+        return $this->hasMany(Examination::class);
+    }
+
     public static function active()
     {
         return static::where('is_active', true)->first();

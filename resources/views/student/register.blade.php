@@ -47,7 +47,7 @@
 
         <div class="info-box">
             <i class="bi bi-info-circle me-2" style="color:var(--primary-light);"></i>
-            You need your <strong style="color:var(--primary-light);">Student ID</strong> (e.g. <code style="color:var(--primary-light);">2025-0001</code>) and your <strong style="color:var(--primary-light);">Last Name</strong> to verify your identity.
+            You need your <strong style="color:var(--primary-light);">LRN</strong> (e.g. <code style="color:var(--primary-light);">123456789012</code>) and your <strong style="color:var(--primary-light);">Last Name</strong> to verify your identity.
         </div>
 
         @if($errors->any())
@@ -57,9 +57,9 @@
         <form method="POST" action="{{ route('student.register.post') }}" id="registerForm">
             @csrf
             <div class="mb-3">
-                <label class="form-label">Student ID <span class="text-required">*</span></label>
-                <input type="text" name="student_id" class="form-control" placeholder="e.g. 2025-0001"
-                       value="{{ old('student_id') }}" required autofocus>
+                <label class="form-label">LRN <span class="text-required">*</span></label>
+                <input type="text" name="lrn" class="form-control" placeholder="e.g. 123456789012"
+                       value="{{ old('lrn') }}" required autofocus>
             </div>
             <div class="mb-3">
                 <label class="form-label">Last Name <span class="text-required">*</span></label>

@@ -90,11 +90,11 @@
                 <form method="POST" action="{{ route('student.login.post') }}" id="loginForm">
                     @csrf
                     <div class="mb-3">
-                        <label class="form-label">Student ID</label>
+                        <label class="form-label">LRN</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
-                            <input type="text" name="student_id" class="form-control"
-                                   placeholder="e.g. 2025-0001" value="{{ old('student_id') }}" required autofocus>
+                            <input type="text" name="lrn" class="form-control"
+                                   placeholder="e.g. 123456789012" value="{{ old('lrn') }}" required autofocus>
                         </div>
                     </div>
                     <div class="mb-4">

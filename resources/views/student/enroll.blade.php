@@ -57,6 +57,16 @@
     </div>
     @endif
 
+    @if(isset($isOpen) && !$isOpen)
+    <div class="card p-4 text-center mb-4">
+        <div class="fs-1 text-warning mb-2"><i class="bi bi-clock-history"></i></div>
+        <h4 class="fw-bold" style="color:var(--primary);">Online Enrollment Closed</h4>
+        <p class="text-muted mb-3">{{ $notice ?? 'Online enrollment is currently closed. Please check back later or contact the registrar office.' }}</p>
+        <div>
+            <a href="{{ route('student.login') }}" class="btn btn-sm btn-outline-primary">Return to Login</a>
+        </div>
+    </div>
+    @else
     <form method="POST" action="{{ route('student.enroll.post') }}" novalidate>
         @csrf
 
@@ -75,12 +85,35 @@
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">Enrollment Type <span class="text-required">*</span></label>
-                        <select name="enrollment_type" class="form-select" required>
-                            @foreach(['New','Old','Transferee','Returnee'] as $t)
-                            <option value="{{ $t }}" {{ old('enrollment_type')===$t?'selected':'' }}>{{ $t }}</option>
-                            @endforeach
+                        <select name="enrollment_type" id="enrollment_type" class="form-select" required onchange="handleTypeChange()">
+                            <option value="New" {{ old('enrollment_type','New')==='New'?'selected':'' }}>New Student</option>
+                            <option value="Old" {{ old('enrollment_type')==='Old'?'selected':'' }}>Regular / Continuing Student (Old)</option>
+                            <option value="Transferee" {{ old('enrollment_type')==='Transferee'?'selected':'' }}>Transferee (Transfer Student)</option>
+                            <option value="Returnee" {{ old('enrollment_type')==='Returnee'?'selected':'' }}>Returning Student (Returnee)</option>
                         </select>
                     </div>
+
+                    {{-- Old Student Callout --}}
+                    <div id="oldStudentNotice" class="mt-3 p-3 rounded-3" style="display:none;background:#eff6ff;border:1px solid #bfdbfe;">
+                        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                            <div>
+                                <i class="bi bi-info-circle-fill text-primary me-2"></i>
+                                <span style="font-size:.85rem;color:#1e40af;"><strong>Existing Sta. Lucia Academy Student?</strong> Log in to your Student Portal to re-enroll with pre-filled records!</span>
+                            </div>
+                            <a href="{{ route('student.login') }}" class="btn btn-sm btn-primary rounded-pill px-3">
+                                <i class="bi bi-box-arrow-in-right me-1"></i> Log In to Re-Enroll
+                            </a>
+                        </div>
+                    </div>
+
+                    {{-- Transferee Notice --}}
+                    <div id="transfereeNotice" class="mt-3 p-3 rounded-3" style="display:none;background:#fefce8;border:1px solid #fef08a;">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-mortarboard-fill text-warning me-1"></i>
+                            <span style="font-size:.85rem;color:#854d0e;"><strong>Transfer Student Requirement:</strong> Please make sure to fill out your previous school details below and prepare your Form 137 / SF10 and Good Moral Certificate upon verification.</span>
+                        </div>
+                    </div>
+
                     <div class="col-md-4">
                         <label class="form-label">Level Type <span class="text-required">*</span></label>
                         <select name="level_type" id="level_type" class="form-select" required onchange="updateGrades()">
@@ -238,6 +271,7 @@
             </button>
         </div>
     </form>
+    @endif
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -245,6 +279,14 @@
 const shsTracks = @json($shsTracks);
 const apiUrl    = "{{ route('student.enroll.sections') }}";
 const syId      = document.querySelector('[name=school_year_id]');
+
+function handleTypeChange() {
+    const val = document.getElementById('enrollment_type').value;
+    const oldNotice = document.getElementById('oldStudentNotice');
+    const transNotice = document.getElementById('transfereeNotice');
+    if (oldNotice) oldNotice.style.display = val === 'Old' ? 'block' : 'none';
+    if (transNotice) transNotice.style.display = val === 'Transferee' ? 'block' : 'none';
+}
 
 function updateGrades() {
     const lt = document.getElementById('level_type').value;

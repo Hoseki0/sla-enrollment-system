@@ -34,6 +34,16 @@ class Enrollment extends Model
         return $this->belongsTo(Admin::class, 'encoded_by');
     }
 
+    public function quarterlyPayments()
+    {
+        return $this->hasMany(QuarterlyPayment::class);
+    }
+
+    public function gradeEntries()
+    {
+        return $this->hasMany(GradeEntry::class);
+    }
+
     public static function generateEnrollmentNo(int $schoolYearId): string
     {
         $sy    = SchoolYear::findOrFail($schoolYearId);

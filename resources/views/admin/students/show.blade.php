@@ -26,12 +26,12 @@
         <div class="flex-grow-1">
             <div style="color:#fff;font-size:1.35rem;font-weight:800;line-height:1.2;">{{ $student->full_name }}</div>
             <div style="color:rgba(255,255,255,.6);font-size:.85rem;">
-                Student ID: <span style="color:#f5c04a;font-weight:700;">{{ $student->student_id }}</span>
+                LRN: <span style="color:#f5c04a;font-weight:700;">{{ $student->lrn ?? '—' }}</span>
             </div>
         </div>
         <div class="text-end">
-            <div style="color:rgba(255,255,255,.5);font-size:.72rem;text-transform:uppercase;letter-spacing:1px;">LRN</div>
-            <div style="color:#fff;font-weight:700;">{{ $student->lrn ?? '—' }}</div>
+            <div style="color:rgba(255,255,255,.5);font-size:.72rem;text-transform:uppercase;letter-spacing:1px;">Student ID</div>
+            <div style="color:#fff;font-weight:700;">{{ $student->student_id }}</div>
         </div>
     </div>
     <div class="card-body">

@@ -15,15 +15,15 @@
             <table class="table table-hover datatable mb-0">
                 <thead style="background:#f8faff;">
                     <tr>
-                        <th class="ps-3">Student ID</th><th>LRN</th><th>Full Name</th>
+                        <th class="ps-3">LRN</th><th>Full Name</th>
                         <th>Gender</th><th>Birthdate</th><th>Contact</th><th>Enrollments</th><th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                 @forelse($students as $s)
                 <tr>
-                    <td class="ps-3 fw-semibold text-primary" style="font-size:.82rem;">{{ $s->student_id }}</td>
-                    <td style="font-size:.82rem;color:#64748b;">{{ $s->lrn ?? '—' }}</td>
+                    <td class="ps-3 fw-semibold text-primary" style="font-size:.82rem;">{{ $s->lrn ?? '—' }}</td>
+                    <td style="font-size:.82rem;color:#64748b;">{{ $s->student_id }}</td>
                     <td class="fw-semibold">{{ $s->full_name }}</td>
                     <td>
                         <span class="badge rounded-pill px-2" style="background:{{ $s->gender==='Male'?'#eff6ff;color:#1d4ed8':'#fdf4ff;color:#7e22ce' }}">{{ $s->gender }}</span>

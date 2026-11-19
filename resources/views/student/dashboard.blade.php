@@ -35,7 +35,7 @@
             @if($latestEnrollment->section) · {{ $latestEnrollment->section->section_name }} @endif
         </div>
         @else
-        <div style="opacity:.7;font-size:.85rem;">No enrollment record found for the current school year.</div>
+        <div style="opacity:.85;font-size:.85rem;margin-top:2px;">No enrollment record found for SY {{ $sy?->year_label }}.</div>
         @endif
     </div>
     @if($latestEnrollment)
@@ -43,6 +43,12 @@
         <div style="opacity:.6;font-size:.72rem;text-transform:uppercase;letter-spacing:1px;">Enrollment No.</div>
         <div style="font-weight:700;font-size:.95rem;">{{ $latestEnrollment->enrollment_no }}</div>
         <div style="opacity:.6;font-size:.78rem;margin-top:.25rem;">{{ $latestEnrollment->enrollment_date?->format('M d, Y') }}</div>
+    </div>
+    @else
+    <div>
+        <a href="{{ route('student.re-enroll') }}" class="btn btn-light fw-bold px-3 py-2 rounded-pill" style="color:var(--primary-dark);white-space:nowrap;">
+            <i class="bi bi-journal-plus me-1"></i> Enroll Now
+        </a>
     </div>
     @endif
 </div>

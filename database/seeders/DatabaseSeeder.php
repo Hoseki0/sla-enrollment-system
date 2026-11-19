@@ -70,5 +70,7 @@ class DatabaseSeeder extends Seeder
                 ], ['max_capacity' => 40]);
             }
         }
+
+        $this->call(PaymentAndGradeSeeder::class);
     }
 }

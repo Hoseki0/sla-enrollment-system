@@ -22,14 +22,19 @@ class EnrollController extends Controller
     // ── Self Enrollment (New Students) ─────────────────────────
     public function showEnroll()
     {
+        $isOpen = \App\Models\Setting::get('enrollment_open', '1') == '1';
+        $notice = \App\Models\Setting::get('enrollment_notice', 'Enrollment is currently closed.');
         $sy          = SchoolYear::active();
         $schoolYears = SchoolYear::orderByDesc('id')->get();
         $shsTracks   = $this->shsTracks;
-        return view('student.enroll', compact('sy', 'schoolYears', 'shsTracks'));
+        return view('student.enroll', compact('sy', 'schoolYears', 'shsTracks', 'isOpen', 'notice'));
     }
 
     public function enroll(Request $request)
     {
+        if (\App\Models\Setting::get('enrollment_open', '1') != '1') {
+            return back()->with('error', \App\Models\Setting::get('enrollment_notice', 'Online enrollment is currently closed.'));
+        }
         $request->validate([
             'last_name'       => 'required|string|max:100',
             'first_name'      => 'required|string|max:100',
@@ -110,23 +115,23 @@ class EnrollController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'student_id' => 'required|string|exists:students,student_id',
+            'lrn' => 'required|string|exists:students,lrn',
             'last_name'  => 'required|string',
             'password'   => 'required|string|min:6|confirmed',
         ]);
 
-        $student = Student::where('student_id', $request->student_id)
+        $student = Student::where('lrn', $request->lrn)
             ->whereRaw('LOWER(last_name) = ?', [strtolower($request->last_name)])
             ->first();
 
         if (!$student) {
-            return back()->withErrors(['student_id' => 'Student ID and Last Name do not match our records.'])->withInput($request->except('password', 'password_confirmation'));
+            return back()->withErrors(['lrn' => 'LRN and Last Name do not match our records.'])->withInput($request->except('password', 'password_confirmation'));
         }
 
         $student->update(['password' => Hash::make($request->password)]);
 
         return redirect()->route('student.login')
-            ->with('register_success', 'Account created! You can now log in with your Student ID and new password.');
+            ->with('register_success', 'Account created! You can now log in with your LRN and new password.');
     }
 
     // ── AJAX: sections ──────────────────────────────────────────
@@ -137,5 +142,75 @@ class EnrollController extends Controller
             ->when($request->strand, fn ($q) => $q->where('strand', $request->strand))
             ->get(['id', 'section_name', 'strand']);
         return response()->json($sections);
+    }
+
+    // ── Logged-in Regular Student: Re-Enrollment ────────────────
+    public function showReEnroll()
+    {
+        $student          = \Illuminate\Support\Facades\Auth::guard('student')->user();
+        $sy               = SchoolYear::active();
+        $isOpen           = \App\Models\Setting::get('enrollment_open', '1') == '1';
+        $notice           = \App\Models\Setting::get('enrollment_notice', 'Online enrollment is currently closed.');
+        $shsTracks        = $this->shsTracks;
+        $activeEnrollment = $sy ? Enrollment::where('student_id', $student->id)->where('school_year_id', $sy->id)->first() : null;
+        $prevEnrollment   = $student->latestEnrollment;
+
+        return view('student.re-enroll', compact('student', 'sy', 'isOpen', 'notice', 'shsTracks', 'activeEnrollment', 'prevEnrollment'));
+    }
+
+    public function reEnroll(Request $request)
+    {
+        if (\App\Models\Setting::get('enrollment_open', '1') != '1') {
+            return back()->with('error', \App\Models\Setting::get('enrollment_notice', 'Online enrollment is currently closed.'));
+        }
+
+        $student = \Illuminate\Support\Facades\Auth::guard('student')->user();
+        $sy      = SchoolYear::active();
+
+        if (!$sy) {
+            return back()->with('error', 'There is no active school year available for enrollment.');
+        }
+
+        $request->validate([
+            'level_type'      => 'required|in:JHS,SHS',
+            'grade_level'     => 'required|string',
+            'enrollment_type' => 'required|in:Old,Transferee,Returnee',
+            'section_id'      => 'nullable|exists:sections,id',
+            'track'           => 'required_if:level_type,SHS|nullable|string',
+            'strand'          => 'required_if:level_type,SHS|nullable|string',
+            'semester'        => 'required_if:level_type,SHS|nullable|string',
+        ]);
+
+        $exists = Enrollment::where('student_id', $student->id)
+            ->where('school_year_id', $sy->id)
+            ->first();
+
+        if ($exists) {
+            return back()->with('error', "You are already enrolled/registered for SY {$sy->year_label} (Status: {$exists->status}).");
+        }
+
+        $enrollment = Enrollment::create([
+            'enrollment_no'   => Enrollment::generateEnrollmentNo($sy->id),
+            'student_id'      => $student->id,
+            'school_year_id'  => $sy->id,
+            'section_id'      => $request->section_id ?: null,
+            'level_type'      => $request->level_type,
+            'grade_level'     => $request->grade_level,
+            'track'           => $request->track ?: null,
+            'strand'          => $request->strand ?: null,
+            'semester'        => $request->semester ?: null,
+            'enrollment_type' => $request->enrollment_type,
+            'status'          => 'Pending',
+            'enrollment_date' => now()->toDateString(),
+        ]);
+
+        \App\Models\ActivityLog::recordStudent(
+            'enrollment.submitted',
+            "Submitted re-enrollment for {$enrollment->grade_level} (SY {$sy->year_label})",
+            $enrollment
+        );
+
+        return redirect()->route('student.dashboard')
+            ->with('success', "Your enrollment application for {$enrollment->grade_level} (SY {$sy->year_label}) has been submitted! Reference: {$enrollment->enrollment_no}.");
     }
 }

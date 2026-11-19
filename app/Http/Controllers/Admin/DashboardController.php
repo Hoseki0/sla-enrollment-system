@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Announcement;
+use App\Models\DocumentRequest;
 use App\Models\Enrollment;
+use App\Models\QuarterlyPayment;
 use App\Models\SchoolYear;
 use App\Models\Student;
 use Illuminate\Support\Facades\DB;
@@ -43,9 +46,43 @@ class DashboardController extends Controller
         $recentEnrollments = Enrollment::with(['student', 'schoolYear'])
             ->where('school_year_id', $syId)
             ->latest()
-            ->limit(10)
+            ->limit(8)
             ->get();
 
-        return view('admin.dashboard', compact('stats', 'gradeBreakdown', 'strandBreakdown', 'recentEnrollments', 'sy'));
+        // Monthly enrollment trend (last 6 months)
+        $monthlyTrend = Enrollment::where('school_year_id', $syId)
+            ->select(
+                DB::raw("DATE_FORMAT(enrollment_date, '%Y-%m') as month"),
+                DB::raw('count(*) as cnt')
+            )
+            ->where('enrollment_date', '>=', now()->subMonths(6)->startOfMonth())
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get();
+
+        // Payment summary by quarter
+        $paymentByQuarter = QuarterlyPayment::where('school_year_id', $syId)
+            ->select('quarter', 'status', DB::raw('sum(amount) as total'), DB::raw('count(*) as cnt'))
+            ->groupBy('quarter', 'status')
+            ->get();
+
+        // Today's stats
+        $todayStats = [
+            'enrollments_today' => Enrollment::whereDate('created_at', today())->count(),
+            'payments_today'    => QuarterlyPayment::whereDate('paid_at', today())->where('status', 'paid')->count(),
+            'collected_today'   => QuarterlyPayment::whereDate('paid_at', today())->where('status', 'paid')->sum('amount'),
+        ];
+
+        // Pending document requests
+        $pendingDocRequests = DocumentRequest::where('status', 'pending')->count();
+
+        // Recent announcements count
+        $activeAnnouncements = Announcement::published()->count();
+
+        return view('admin.dashboard', compact(
+            'stats', 'gradeBreakdown', 'strandBreakdown', 'recentEnrollments', 'sy',
+            'monthlyTrend', 'paymentByQuarter', 'todayStats',
+            'pendingDocRequests', 'activeAnnouncements'
+        ));
     }
 }

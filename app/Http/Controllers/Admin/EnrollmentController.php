@@ -41,31 +41,84 @@ class EnrollmentController extends Controller
 
     public function create()
     {
-        $schoolYears = SchoolYear::orderByDesc('id')->get();
-        $sy          = SchoolYear::active();
+        $schoolYears      = SchoolYear::orderByDesc('id')->get();
+        $sy               = SchoolYear::active();
+        $existingStudents = Student::orderBy('last_name')->orderBy('first_name')->get();
         return view('admin.enrollments.create', [
-            'schoolYears' => $schoolYears,
-            'sy'          => $sy,
-            'shsTracks'   => $this->shsTracks,
+            'schoolYears'      => $schoolYears,
+            'sy'               => $sy,
+            'shsTracks'        => $this->shsTracks,
+            'existingStudents' => $existingStudents,
         ]);
     }
 
     public function store(Request $request)
     {
+        // ── Case 1: Enrolling an Existing Regular / Continuing Student ──
+        if ($request->filled('existing_student_id')) {
+            $request->validate([
+                'existing_student_id' => 'required|exists:students,id',
+                'school_year_id'      => 'required|exists:school_years,id',
+                'level_type'          => 'required|in:JHS,SHS',
+                'grade_level'         => 'required|string',
+                'enrollment_type'     => 'required|in:New,Old,Transferee,Returnee',
+                'section_id'          => 'nullable|exists:sections,id',
+                'track'               => 'required_if:level_type,SHS|nullable|string',
+                'strand'              => 'required_if:level_type,SHS|nullable|string',
+                'semester'            => 'required_if:level_type,SHS|nullable|string',
+            ]);
+
+            $student = Student::findOrFail($request->existing_student_id);
+
+            // Check if already enrolled in this school year
+            $exists = Enrollment::where('student_id', $student->id)
+                ->where('school_year_id', $request->school_year_id)
+                ->first();
+
+            if ($exists) {
+                return back()->withInput()->with('error', "{$student->full_name} already has an enrollment record ({$exists->enrollment_no}) for this school year.");
+            }
+
+            $enrollment = Enrollment::create([
+                'enrollment_no'   => Enrollment::generateEnrollmentNo($request->school_year_id),
+                'student_id'      => $student->id,
+                'school_year_id'  => $request->school_year_id,
+                'section_id'      => $request->section_id ?: null,
+                'encoded_by'      => Auth::guard('admin')->id(),
+                'level_type'      => $request->level_type,
+                'grade_level'     => $request->grade_level,
+                'track'           => $request->track ?: null,
+                'strand'          => $request->strand ?: null,
+                'semester'        => $request->semester ?: null,
+                'enrollment_type' => $request->enrollment_type,
+                'status'          => 'Enrolled',
+                'enrollment_date' => now()->toDateString(),
+            ]);
+
+            \App\Models\ActivityLog::recordAdmin('enrollment.created', "Enrolled regular student: {$student->full_name} ({$enrollment->grade_level})", $enrollment);
+
+            return redirect()->route('admin.enrollments.index')
+                ->with('success', "Regular student {$student->full_name} successfully enrolled in {$enrollment->grade_level} ({$enrollment->enrollment_no}).");
+        }
+
+        // ── Case 2: Enrolling a New Student or Transfer Student ──
         $request->validate([
-            'last_name'       => 'required|string|max:100',
-            'first_name'      => 'required|string|max:100',
-            'birthdate'       => 'required|date',
-            'gender'          => 'required|in:Male,Female',
-            'address'         => 'required|string',
-            'level_type'      => 'required|in:JHS,SHS',
-            'grade_level'     => 'required|string',
-            'enrollment_type' => 'required|in:New,Old,Transferee,Returnee',
-            'school_year_id'  => 'required|exists:school_years,id',
-            'lrn'             => 'nullable|digits:12|unique:students,lrn',
-            'track'           => 'required_if:level_type,SHS',
-            'strand'          => 'required_if:level_type,SHS',
-            'semester'        => 'required_if:level_type,SHS',
+            'last_name'            => 'required|string|max:100',
+            'first_name'           => 'required|string|max:100',
+            'birthdate'            => 'required|date',
+            'gender'               => 'required|in:Male,Female',
+            'address'              => 'required|string',
+            'level_type'           => 'required|in:JHS,SHS',
+            'grade_level'          => 'required|string',
+            'enrollment_type'      => 'required|in:New,Old,Transferee,Returnee',
+            'school_year_id'       => 'required|exists:school_years,id',
+            'lrn'                  => 'nullable|digits:12|unique:students,lrn',
+            'track'                => 'required_if:level_type,SHS|nullable|string',
+            'strand'               => 'required_if:level_type,SHS|nullable|string',
+            'semester'             => 'required_if:level_type,SHS|nullable|string',
+            'last_school_attended' => 'required_if:enrollment_type,Transferee|nullable|string|max:200',
+            'last_school_address'  => 'nullable|string|max:300',
+            'school_type'          => 'nullable|in:Public,Private',
         ]);
 
         DB::transaction(function () use ($request) {
@@ -100,11 +153,10 @@ class EnrollmentController extends Controller
                 'last_school_attended' => $request->last_school_attended ?: null,
                 'last_school_address'  => $request->last_school_address ?: null,
                 'school_type'          => $request->school_type ?? 'Public',
-                // Default portal password: LRN if provided, otherwise last name (lowercase)
                 'password'             => Hash::make($request->lrn ?: strtolower($request->last_name)),
             ]);
 
-            Enrollment::create([
+            $enrollment = Enrollment::create([
                 'enrollment_no'   => Enrollment::generateEnrollmentNo($request->school_year_id),
                 'student_id'      => $student->id,
                 'school_year_id'  => $request->school_year_id,
@@ -116,14 +168,17 @@ class EnrollmentController extends Controller
                 'strand'          => $request->strand ?: null,
                 'semester'        => $request->semester ?: null,
                 'enrollment_type' => $request->enrollment_type,
-                'status'          => 'Pending',
+                'status'          => 'Enrolled',
                 'enrollment_date' => now()->toDateString(),
             ]);
+
+            \App\Models\ActivityLog::recordAdmin('enrollment.created', "Enrolled student: {$student->full_name} ({$enrollment->enrollment_type} - {$enrollment->grade_level})", $enrollment);
         });
 
+        $typeLabel = $request->enrollment_type === 'Transferee' ? 'Transfer Student' : 'New Student';
         $defaultPw = $request->lrn ?: strtolower($request->last_name);
         return redirect()->route('admin.enrollments.index')
-            ->with('success', "Student enrolled. Portal login: Student ID = auto-generated | Password = {$defaultPw}");
+            ->with('success', "{$typeLabel} enrolled successfully! Portal password: {$defaultPw}");
     }
 
     public function show(Enrollment $enrollment)

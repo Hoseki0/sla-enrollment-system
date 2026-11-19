@@ -5,7 +5,7 @@
 <div class="section-header">
     <div>
         <h2><i class="bi bi-pencil me-2 text-primary"></i>Edit Student</h2>
-        <p>{{ $student->full_name }} &mdash; {{ $student->student_id }}</p>
+        <p>{{ $student->full_name }} &mdash; LRN: {{ $student->lrn ?? '—' }}</p>
     </div>
     <a href="{{ route('admin.students.show', $student) }}" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
         <i class="bi bi-arrow-left me-1"></i>Back

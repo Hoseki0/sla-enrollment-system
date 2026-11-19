@@ -27,10 +27,10 @@ class Student extends Authenticatable
         'password'  => 'hashed',
     ];
 
-    // Auth username field — login with student_id
+    // Auth username field — login with LRN
     public function username(): string
     {
-        return 'student_id';
+        return 'lrn';
     }
 
     public function enrollments()
@@ -41,6 +41,16 @@ class Student extends Authenticatable
     public function latestEnrollment()
     {
         return $this->hasOne(Enrollment::class)->latestOfMany();
+    }
+
+    public function quarterlyPayments()
+    {
+        return $this->hasMany(QuarterlyPayment::class);
+    }
+
+    public function gradeEntries()
+    {
+        return $this->hasMany(GradeEntry::class);
     }
 
     public function getFullNameAttribute(): string
