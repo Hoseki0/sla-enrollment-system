@@ -50,9 +50,16 @@ class DashboardController extends Controller
             ->get();
 
         // Monthly enrollment trend (last 6 months)
+        $driver = DB::connection()->getDriverName();
+        $monthExpr = match ($driver) {
+            'pgsql'  => "TO_CHAR(enrollment_date, 'YYYY-MM')",
+            'sqlite' => "strftime('%Y-%m', enrollment_date)",
+            default  => "DATE_FORMAT(enrollment_date, '%Y-%m')",
+        };
+
         $monthlyTrend = Enrollment::where('school_year_id', $syId)
             ->select(
-                DB::raw("DATE_FORMAT(enrollment_date, '%Y-%m') as month"),
+                DB::raw("{$monthExpr} as month"),
                 DB::raw('count(*) as cnt')
             )
             ->where('enrollment_date', '>=', now()->subMonths(6)->startOfMonth())
