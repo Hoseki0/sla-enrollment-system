@@ -23,6 +23,11 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('Admin@123'),
             'role'     => 'registrar',
         ]);
+        Admin::firstOrCreate(['email' => 'teacher@stalucia.edu.ph'], [
+            'name'     => 'Maria Clara Santos',
+            'password' => Hash::make('Teacher@123'),
+            'role'     => 'teacher',
+        ]);
 
         // School Years
         SchoolYear::firstOrCreate(['year_label' => '2024-2025'], ['is_active' => false]);

@@ -544,4 +544,5 @@ echo "Grade 12 — LRN: 345678901234 | Password: santos2025  (ABM, Enrolled, Q1+
 echo "Parent 1 — pedro.delacruz@email.com | Password: parent123 (Connected to Juan Dela Cruz - Grade 8)\n";
 echo "Parent 2 — roberto.reyes@email.com  | Password: parent123 (Connected to Maria Reyes - Grade 11)\n";
 echo "Admin    — admin@stalucia.edu.ph | Password: Admin@123\n";
+echo "Teacher  — teacher@stalucia.edu.ph | Password: Teacher@123\n";
 echo "\nDone!\n";
