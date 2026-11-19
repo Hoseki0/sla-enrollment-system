@@ -32,8 +32,11 @@ class Subject extends Model
         }
 
         if ($enrollment->semester) {
-            $query->where(function ($q) use ($enrollment) {
-                $q->whereNull('semester')->orWhere('semester', $enrollment->semester);
+            $sem = is_numeric($enrollment->semester)
+                ? (int) $enrollment->semester
+                : (str_starts_with((string) $enrollment->semester, '2') ? 2 : 1);
+            $query->where(function ($q) use ($sem) {
+                $q->whereNull('semester')->orWhere('semester', $sem);
             });
         }
 

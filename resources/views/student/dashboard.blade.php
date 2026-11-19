@@ -55,25 +55,7 @@
 
 {{-- Stats Row --}}
 <div class="row g-3 mb-4">
-    <div class="col-6 col-md-3">
-        <div class="stat-card" style="background:linear-gradient(135deg,#1a3c6e,#2356a0);">
-            <div class="stat-icon" style="background:rgba(255,255,255,.15);"><i class="bi bi-journal-check text-white"></i></div>
-            <div>
-                <div class="stat-val text-white">{{ $enrollmentHistory->count() }}</div>
-                <div class="stat-label">Total Enrollments</div>
-            </div>
-        </div>
-    </div>
-    <div class="col-6 col-md-3">
-        <div class="stat-card" style="background:linear-gradient(135deg,#15803d,#16a34a);">
-            <div class="stat-icon" style="background:rgba(255,255,255,.15);"><i class="bi bi-patch-check text-white"></i></div>
-            <div>
-                <div class="stat-val text-white">{{ $enrollmentHistory->where('status','Enrolled')->count() }}</div>
-                <div class="stat-label">Enrolled</div>
-            </div>
-        </div>
-    </div>
-    <div class="col-6 col-md-3">
+    <div class="col-6">
         <div class="stat-card" style="background:linear-gradient(135deg,#a16207,#ca8a04);">
             <div class="stat-icon" style="background:rgba(255,255,255,.15);"><i class="bi bi-hourglass text-white"></i></div>
             <div>
@@ -82,7 +64,7 @@
             </div>
         </div>
     </div>
-    <div class="col-6 col-md-3">
+    <div class="col-6">
         <div class="stat-card" style="background:linear-gradient(135deg,#6d28d9,#7c3aed);">
             <div class="stat-icon" style="background:rgba(255,255,255,.15);"><i class="bi bi-mortarboard text-white"></i></div>
             <div>
