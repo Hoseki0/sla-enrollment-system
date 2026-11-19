@@ -247,6 +247,13 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 </script>
+<script>
+window.addEventListener('pageshow', function (event) {
+    if (event.persisted) {
+        window.location.reload();
+    }
+});
+</script>
 @stack('scripts')
 </body>
 </html>
