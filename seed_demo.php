@@ -491,6 +491,49 @@ echo "✓ Sample announcements seeded.\n";
 );
 echo "✓ Sample document requests seeded.\n";
 
+// ── Sample Parent Accounts & Attendance Sheet ────────────────
+$parent1 = \App\Models\ParentUser::updateOrCreate(
+    ['email' => 'pedro.delacruz@email.com'],
+    [
+        'name'           => 'Pedro Dela Cruz',
+        'contact_number' => '09171112222',
+        'relationship'   => 'Father',
+        'password'       => Hash::make('parent123'),
+    ]
+);
+$parent1->students()->syncWithoutDetaching([$g8->id => ['relationship' => 'Father']]);
+
+$parent2 = \App\Models\ParentUser::updateOrCreate(
+    ['email' => 'roberto.reyes@email.com'],
+    [
+        'name'           => 'Roberto Reyes',
+        'contact_number' => '09182223333',
+        'relationship'   => 'Father',
+        'password'       => Hash::make('parent123'),
+    ]
+);
+$parent2->students()->syncWithoutDetaching([$g11->id => ['relationship' => 'Father']]);
+
+$sampleStatuses = ['Present', 'Present', 'Present', 'Late', 'Present', 'Present', 'Excused', 'Present', 'Absent', 'Present'];
+foreach ([[$g8, $enr8], [$g11, $enr11], [$g12, $enr12], [$g7, $enr7]] as [$stu, $enr]) {
+    for ($d = 0; $d < 10; $d++) {
+        $date = now()->subDays($d)->toDateString();
+        $st   = $sampleStatuses[$d];
+        \App\Models\Attendance::updateOrCreate(
+            ['student_id' => $stu->id, 'attendance_date' => $date],
+            [
+                'enrollment_id'  => $enr->id,
+                'school_year_id' => $sy->id,
+                'status'         => $st,
+                'time_in'        => $st === 'Present' ? '07:25 AM' : ($st === 'Late' ? '08:10 AM' : null),
+                'remarks'        => $st === 'Excused' ? 'Medical checkup' : ($st === 'Late' ? 'Heavy traffic' : null),
+                'recorded_by'    => 1,
+            ]
+        );
+    }
+}
+echo "✓ Parent accounts & 10-day attendance sheets seeded.\n";
+
 echo "\n=== Test Accounts ===\n";
 echo "Grade 7  — LRN: 456789012345 | Password: garcia2025  (Enrolled, Q1 paid)\n";
 echo "Grade 8  — LRN: 123456789012 | Password: delacruz    (Enrolled, Q1 paid, grades seeded)\n";
@@ -498,5 +541,7 @@ echo "Grade 9  — LRN: 567890123456 | Password: mendoza2025 (Enrolled, pending 
 echo "Grade 11 — LRN: 234567890123 | Password: reyes2025   (STEM, Enrolled, Q1 paid, grades seeded)\n";
 echo "Grade 11 — LRN: 678901234567 | Password: bautista2025 (HUMSS, Pending approval)\n";
 echo "Grade 12 — LRN: 345678901234 | Password: santos2025  (ABM, Enrolled, Q1+Q2 paid, grades seeded)\n";
+echo "Parent 1 — pedro.delacruz@email.com | Password: parent123 (Connected to Juan Dela Cruz - Grade 8)\n";
+echo "Parent 2 — roberto.reyes@email.com  | Password: parent123 (Connected to Maria Reyes - Grade 11)\n";
 echo "Admin    — admin@stalucia.edu.ph | Password: Admin@123\n";
 echo "\nDone!\n";

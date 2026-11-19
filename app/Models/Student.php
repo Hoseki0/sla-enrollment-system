@@ -53,6 +53,18 @@ class Student extends Authenticatable
         return $this->hasMany(GradeEntry::class);
     }
 
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
+
+    public function parents()
+    {
+        return $this->belongsToMany(ParentUser::class, 'parent_student', 'student_id', 'parent_id')
+            ->withPivot('relationship')
+            ->withTimestamps();
+    }
+
     public function getFullNameAttribute(): string
     {
         return $this->last_name . ', ' . $this->first_name

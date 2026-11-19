@@ -101,6 +101,7 @@ $navItems = [
     ['icon'=>'bi-credit-card',    'label'=>'Payments',          'route'=>'admin.payments.index'],
     ['icon'=>'bi-cash-stack',     'label'=>'Fee Schedules',     'route'=>'admin.fees.index'],
     ['icon'=>'bi-mortarboard',    'label'=>'Grades',            'route'=>'admin.grades.index'],
+    ['icon'=>'bi-calendar-check', 'label'=>'Attendance',        'route'=>'admin.attendance.index'],
     ['icon'=>'bi-grid-3x3-gap',   'label'=>'Sections',          'route'=>'admin.sections.index'],
     ['icon'=>'bi-calendar3',      'label'=>'School Years',      'route'=>'admin.school-years.index'],
 ];

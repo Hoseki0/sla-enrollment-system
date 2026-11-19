@@ -149,9 +149,15 @@
 
                 <div class="mt-auto">
                     <p class="footer-text mb-2"><i class="bi bi-shield-lock me-1"></i>Authorized Students Only &bull; &copy; {{ date('Y') }} SLA</p>
-                    <a href="{{ route('admin.login') }}" class="admin-link">
-                        Admin / Staff Login →
-                    </a>
+                    <div class="d-flex justify-content-center gap-3 flex-wrap">
+                        <a href="{{ route('parent.login') }}" class="admin-link mt-0">
+                            Parent Portal →
+                        </a>
+                        <span class="text-muted">|</span>
+                        <a href="{{ route('admin.login') }}" class="admin-link mt-0">
+                            Admin / Staff Login →
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

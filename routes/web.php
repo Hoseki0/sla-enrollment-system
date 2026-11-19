@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\ActivityLogController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AnnouncementController;
+use App\Http\Controllers\Admin\AttendanceController as AdminAttendanceController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DocumentRequestController as AdminDocumentRequestController;
@@ -79,6 +80,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/grades/{enrollment}',                   [AdminGradeController::class, 'show'])->name('grades.show');
         Route::post('/grades/{enrollment}',                  [AdminGradeController::class, 'store'])->name('grades.store');
         Route::patch('/grades/{enrollment}/publish',         [AdminGradeController::class, 'publishAll'])->name('grades.publish');
+
+        // Attendance
+        Route::get('/attendance',                            [AdminAttendanceController::class, 'index'])->name('attendance.index');
+        Route::post('/attendance',                           [AdminAttendanceController::class, 'store'])->name('attendance.store');
 
         // ── NEW FEATURES ────────────────────────────────────────
 
@@ -167,5 +172,23 @@ Route::prefix('student')->name('student.')->group(function () {
         // Document Requests
         Route::get('/document-requests',  [StudentDocumentRequestController::class, 'index'])->name('document-requests.index');
         Route::post('/document-requests', [StudentDocumentRequestController::class, 'store'])->name('document-requests.store');
+    });
+});
+
+// ── Parent Portal ───────────────────────────────────────────────
+Route::prefix('parent')->name('parent.')->group(function () {
+    Route::get('/',         fn () => redirect()->route('parent.login'));
+    Route::get('/login',    [\App\Http\Controllers\Parent\AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login',   [\App\Http\Controllers\Parent\AuthController::class, 'login'])->name('login.post');
+    Route::get('/register', [\App\Http\Controllers\Parent\AuthController::class, 'showRegister'])->name('register');
+    Route::post('/register',[\App\Http\Controllers\Parent\AuthController::class, 'register'])->name('register.post');
+    Route::post('/logout',  [\App\Http\Controllers\Parent\AuthController::class, 'logout'])->name('logout');
+
+    Route::middleware(\App\Http\Middleware\ParentAuth::class)->group(function () {
+        Route::get('/dashboard',  [\App\Http\Controllers\Parent\PortalController::class, 'dashboard'])->name('dashboard');
+        Route::get('/attendance', [\App\Http\Controllers\Parent\PortalController::class, 'attendance'])->name('attendance');
+        Route::get('/grades',     [\App\Http\Controllers\Parent\PortalController::class, 'grades'])->name('grades');
+        Route::get('/payments',   [\App\Http\Controllers\Parent\PortalController::class, 'payments'])->name('payments');
+        Route::post('/link-child',[\App\Http\Controllers\Parent\PortalController::class, 'linkChild'])->name('link-child');
     });
 });
